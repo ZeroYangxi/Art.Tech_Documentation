@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottles - Documentation</title>
+    <link rel="icon" type="image/png" href="./bottle1-complete.png">
+    <style>
+        :root {
+            --win95-gray: #c0c0c0;
+            --win95-dark: #808080;
+            --win95-darker: #404040;
+            --win95-light: #ffffff;
+            --win95-blue: #000080;
+            --win95-green: #008080;
+            
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul { list-style-type: none; 
+            font-size: 14px;}
+
+        body {
+            background-color: var(--win95-green);
+            font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+            padding: 20px;
+            color: black;
+        }
+
+        .window {
+            background-color: var(--win95-gray);
+            border: 2px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+            padding: 2px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .title-bar {
+            background-color: var(--win95-blue);
+            color: white;
+            padding: 2px 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-bar-text {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .title-bar-button {
+            width: 16px;
+            height: 14px;
+            background: var(--win95-gray);
+            border: 1px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+        }
+
+        .window-content {
+            padding: 10px;
+            background-color: var(--win95-gray);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--win95-darker);
+            margin-bottom: -1px;
+        }
+
+        .tab-button {
+            padding: 5px 15px;
+            background: var(--win95-gray);
+            border: 1px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom: 1px solid var(--win95-darker);
+            margin-right: 2px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .tab-button.active {
+            background: var(--win95-light);
+            border-bottom: 1px solid var(--win95-light);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--win95-light);
+            border: 1px solid var(--win95-darker);
+            padding: 10px;
+            min-height: 300px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 12px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="window" id="mainWindow">
+        <div class="title-bar">
+            <div class="title-bar-text">Bottles.exe - Film Documentation</div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button">–</button>
+                <button class="title-bar-button">□</button>
+                <button class="title-bar-button">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="synopsis">Synopsis!!</button>
+                <button class="tab-button" data-tab="characters">Characters...</button>
+                <button class="tab-button" data-tab="visual">Insignificant Artist's Words?</button>
+                <button class="tab-button" data-tab="process">Process~</button>
+                <button class="tab-button" data-tab="credits">Credits()</button>
+            </div>
+
+            <div id="synopsis" class="tab-content active">
+                <h2>Vessels</h2>
+                <p>A 40-second animated film exploring emotions and relationship of plastic bottles.</p>
+                <p>Title concepts: Vessels. Spilled Love. Treat or Cheat.</p>
+                <p>Production Period: January 25 - 31, 2025</p>
+                <p>Created by: <a href="https://www.instagram.com/__riverside__01?igsh=M2Z2dTg0a3Rienpi&utm_source=qr" target="_blank">River Yu</a></p>
+                <p>"Please set your volume above at least 50% before playing. Note that audio begins at 18 seconds into the clip."</p>
+                <video controls width="1000">
+                    <source src="./Treat or Cheat 1.02.mp4" type="video/mp4" />
+                </video>
+            </div>
+
+            <div id="characters" class="tab-content">
+                <h2>Characters</h2>
+                <p>Meet our three main bottles, each with their own unique personality and journey.</p>
+                <img src="./bottle1-complete.png" alt="Bottle 1" width="100">
+                <p>Main bottle.</p>
+                <img src="./bottle2-sm.png" alt="Bottle 2" width="100">
+                <img src="./bottle3-sm.png" alt="Bottle 3" width="100">
+                <p>Okay... kids rights matter!</p>
+                <img src="kid1.png" alt="Kid 1" width="100">
+                <img src="kid2.png" alt="Kid 2" width="100">
+                <p>Actually... don't forget the hand at last and the water poured!<br/> (They don't have the priviledge to have headshots compared to our bottles) </p>
+                
+            </div>
+
+            <div id="visual" class="tab-content">
+                <h2>This film doesn't worth this documentation if not required</h2>
+                <h1>A lot can be done to make it better but I am just too lazy to polish it, SORRY</h1>
+                <p>Hi I am River Yu 余洋希。What I wanted to explore is the emotional weight of someone who cheats (the water turbulence scene) and also the uncertainty of fate (the hand at last), but I believe it requires longer length to achieve that given the plots and twists I designed....</p>
+                
+                <p></p>
+                <h2>Lessons learned with lack of sleep right before deadline:</h2>
+                <ul>
+                    <li>
+                    1. Start early to implement.
+
+                    </li>
+                    <li>
+                    2. Don't stay up late.
+                    </li>
+                    <li>
+                     
+                    </li>
+
+                </ul>
+
+                <p></p>
+                    Timeline Constraints:
+
+                    3-day production window
+                    Focus on essential scenes
+                    Simplified animation style to meet deadline 
+                    
+                    Technical Approach:
+                    
+                    Adobe Animate for primary animation
+                    Emphasis on silhouettes and simple movements
+                    Water effects achieved through basic animation principles
+                    Minimal use of effects to maintain clarity
+                    
+                    Sound Design:
+                    
+                    Heartbeat as primary audio element
+                    Strategic silence to build tension
+                    Optional text message notification sound for final scene
+                    No dialogue to maintain universal appeal
+                    
+                    [Scene Breakdown]
+                    
+                    Established Relationship (0-5 seconds):
+                    
+                    
+                    Quick montage of shared moments
+                    Focus on simple acts of care (feeding scene)
+                    Establish visual language of bottle movements
+                    
+                    
+                    Party Scene (5-15 seconds):
+                    
+                    
+                    Dynamic lighting changes
+                    Introduction of Bottle 3
+                    Building tension through movement
+                    Emotional climax with interrupted intimate moment
+                    
+                    
+                    Internal Struggle (15-25 seconds):
+                    
+                    
+                    Extended single shot
+                    Integration of water/tear effects
+                    Flashback elements (flowers, memories)
+                    Emphasis on isolation and confusion
+                    
+                    
+                    Final Moment (25-30 seconds):
+                    
+                    
+                    Return to partner
+                    Building tension with approaching footsteps/message alert
+                    Open ending with blackout</p>
+                
+            </div>
+
+            <div id="process" class="tab-content">
+                <h1>Process</h1>
+                <p>Production Period: January 25 - 31, 2025</p>
+
+                <h2>Ideation:</h2>
+                <h2>Implementation:</h2>
+                <p>Given that the producer</p>
+                <h2>Sound:</h2>
+
+                <p> </p>
+            </div>
+
+            <div id="credits" class="tab-content">
+                <h2>Credits</h2>
+                <p>The creative team behind the film.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function switchTab(tabId) {
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                // Deactivate all tabs
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show selected tab content
+                const selectedContent = document.getElementById(tabId);
+                const selectedTab = document.querySelector(`[data-tab="${tabId}"]`);
+                
+                if (selectedContent && selectedTab) {
+                    selectedContent.classList.add('active');
+                    selectedTab.classList.add('active');
+                }
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Window dragging
+            const titleBar = document.querySelector('.title-bar');
+            const mainWindow = document.getElementById('mainWindow');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+
+            titleBar.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                initialX = e.clientX - mainWindow.offsetLeft;
+                initialY = e.clientY - mainWindow.offsetTop;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    mainWindow.style.left = `${currentX}px`;
+                    mainWindow.style.top = `${currentY}px`;
+                    mainWindow.style.position = 'absolute';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        });
+    </script>
+</body>
+</html>
