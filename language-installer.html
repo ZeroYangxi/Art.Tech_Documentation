@@ -380,11 +380,11 @@ PROCEED AT YOUR OWN RISK. CLICK "I ACCEPT" TO CONTINUE.
                     <h2 style="font-size: 14px; margin-bottom: 10px;">Language Sample Analysis</h2>
                     <p style="font-size: 12px; margin-bottom: 15px;">Please listen carefully to this required language sample. Your cognitive patterns will be analyzed for compatibility.</p>
                     
-                    <div style="display: flex; justify-content: center; margin: 15px 0;">
-                        <!-- <button id="playButton" class="wizard-button">▶ Play Language Sample</button> -->
-                        <!-- <button id="playButton" class="wizard-button" onclick="document.getElementById('audioSample').play()">▶ Play Language Sample</button> -->
-                        <audio controls id="audioSample" preload="auto" >
-                            <source src="LanguageFlush.mp3" type="audio/mpeg">
+                    <div style="display: flex; justify-content: center; margin: 15px 0; position: relative; z-index: 10;">
+                        <button id="playButton" class="wizard-button">▶ Play Language Sample</button>
+                        <audio id="audioSample" style="width: 250px; z-index: 10; position: relative;">
+                            <source src="https://drive.google.com/file/d/1gtf-atoxBTwo4Mrb9Af_q32w5bpIm9Ml/view?usp=sharing" type="audio/mpeg">
+                            Your browser does not support the audio element.
                         </audio>
                     </div>
                     
@@ -558,6 +558,21 @@ Finalizing installation...
                 updateButtons();
             });
             
+            // Audio handling
+            // Add this to your existing script - must be inside the DOMContentLoaded handler
+            // Ensure clicks on the audio element are not prevented
+            audioSample.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent event bubbling
+            });
+
+            // Make sure the audio element can be properly interacted with
+            document.getElementById('step4').addEventListener('click', function(e) {
+                // Make sure this click handler doesn't interfere with audio controls
+                if (e.target !== audioSample && !audioSample.contains(e.target)) {
+                    // Handle other click events in this step
+                }
+            });
+
             // Play audio button handler
             playButton.addEventListener('click', () => {
                 playButton.disabled = true;
