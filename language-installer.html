@@ -280,8 +280,8 @@
             <div class="wizard-header">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2WTytEURiHn2EWFqJkR2TC1jexkIWFlJKdT+ADkIVsLa3sBkuRD6CslJXyEfgbC0tJspGZ8Tfe6dTtuPfc+84YC+etU/fec573Ob/33AH7nABNoAWMVxzvGWgBH8A80K9zpoCLCpP7ZQ24wYgToAO8Am0gFzbwJbDpGXlyzZnZPQZaROQM6AJzOYaKchxlawOYtQhYBN40+3Vgbw+UwJYivwfmsgQcAj/K1nQfLlG8KGmvwGJMwDrwrbiLPVqOYkcFPAGrUQGHOudHFXIUa0r+EzDiFzAmdxIYrViA4kTRHDCsBcwAH4r9T7QlHgHDWkDDw8QI2JGQtqJ5AAa1gAQY8TFR92j16v/XChiUgE6O5rOOZk8LOMnRfChHgysBTznWgHUJuM2xBlwKaAfUgnbAzKgFLwK+A2p+R0LeAkbxFVALHvMkbyrqV0BdOwW2gWOlo6FQ7DvgUJPfAa6i9orWWpwHzgPquUm6mVntgtvAU4HkTzJ3Cwy4GEiALc90vQCXwKjrA2YfmJcIm6O3I3O7wLRLsn1i+QV+l0y8j8RfOQAAAABJRU5ErkJggg==" class="wizard-icon" alt="Language Icon">
                 <div>
-                    <h1 class="wizard-title">English Language Installation Wizard</h1>
-                    <p class="wizard-subtitle">This wizard will guide you through the process of integrating English into your identity system.</p>
+                    <!-- <h1 class="wizard-title">English Language Installation Wizard</h1> -->
+                    <p class="wizard-subtitle">This wizard will guide you through the process of installing English into your identity system.</p>
                 </div>
             </div>
 
@@ -382,8 +382,9 @@ PROCEED AT YOUR OWN RISK. CLICK "I ACCEPT" TO CONTINUE.
                     
                     <div style="display: flex; justify-content: center; margin: 15px 0; position: relative; z-index: 10;">
                         <button id="playButton" class="wizard-button">▶ Play Language Sample</button>
-                        <audio id="audioSample" style="width: 250px; z-index: 10; position: relative;">
-                            <source src="https://drive.google.com/file/d/1gtf-atoxBTwo4Mrb9Af_q32w5bpIm9Ml/view?usp=sharing" type="audio/mpeg">
+                        <audio id="audioSample" preload="auto">
+                            <!-- Replace with a direct audio file URLs tyle="display: none; -->
+                            <source src="LanguageFlush.mp3" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
