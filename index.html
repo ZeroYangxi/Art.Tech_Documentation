@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vessels - Documentation</title>
-    <link rel="icon" type="image/png" href="./bottle1-complete.png">
+    <title>My Win95 Portfolio</title>
     <style>
         :root {
             --win95-gray: #c0c0c0;
@@ -13,35 +12,135 @@
             --win95-light: #ffffff;
             --win95-blue: #000080;
             --win95-green: #008080;
-            
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
         }
-
-        ul { list-style-type: none; 
-            font-size: 14px;}
 
         body {
             background-color: var(--win95-green);
-            font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
-            padding: 20px;
-            color: black;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
         }
 
+        /* Desktop Icons */
+        .desktop {
+            padding: 20px;
+            height: calc(100vh - 30px);
+            position: relative;
+        }
+
+        .desktop-icon {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .desktop-icon:hover .icon-label {
+            background-color: var(--win95-blue);
+            color: var(--win95-light);
+        }
+
+        .icon-image {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+
+        .icon-label {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            padding: 2px 4px;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-color: var(--win95-gray);
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--win95-light);
+            z-index: 1000;
+        }
+
+        .start-button {
+            height: 22px;
+            margin-left: 2px;
+            padding: 2px 5px;
+            display: flex;
+            align-items: center;
+            background-color: var(--win95-gray);
+            border: 1px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .start-button img {
+            height: 16px;
+            margin-right: 4px;
+        }
+
+        .taskbar-divider {
+            width: 1px;
+            height: 22px;
+            background-color: var(--win95-darker);
+            margin: 0 2px;
+        }
+
+        .taskbar-time {
+            margin-left: auto;
+            padding: 2px 5px;
+            font-size: 12px;
+            border: 1px solid;
+            border-top-color: var(--win95-darker);
+            border-left-color: var(--win95-darker);
+            border-right-color: var(--win95-light);
+            border-bottom-color: var(--win95-light);
+            height: 22px;
+            display: flex;
+            align-items: center;
+            margin-right: 2px;
+        }
+
+        /* Windows */
         .window {
+            position: absolute;
             background-color: var(--win95-gray);
             border: 2px solid;
             border-top-color: var(--win95-light);
             border-left-color: var(--win95-light);
             border-right-color: var(--win95-darker);
             border-bottom-color: var(--win95-darker);
-            padding: 2px;
-            margin-bottom: 20px;
-            position: relative;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 100;
+            resize: both;
+            overflow: hidden;
+            min-width: 300px;
+            min-height: 200px;
+        }
+
+        .window.active {
+            z-index: 200;
         }
 
         .title-bar {
@@ -51,6 +150,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: move;
+        }
+
+        .title-bar.inactive {
+            background-color: var(--win95-dark);
         }
 
         .title-bar-text {
@@ -72,262 +176,378 @@
             border-left-color: var(--win95-light);
             border-right-color: var(--win95-darker);
             border-bottom-color: var(--win95-darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
         }
 
         .window-content {
-            padding: 10px;
+            padding: 2px;
+            height: calc(100% - 22px);
+            overflow: hidden;
+        }
+
+        .window-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* About Me Window */
+        .about-content {
+            padding: 15px;
+            background-color: var(--win95-light);
+            height: 100%;
+            overflow: auto;
+        }
+
+        .about-content h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .about-content p {
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        /* Start Menu */
+        .start-menu {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 200px;
             background-color: var(--win95-gray);
-        }
-
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid var(--win95-darker);
-            margin-bottom: -1px;
-        }
-
-        .tab-button {
-            padding: 5px 15px;
-            background: var(--win95-gray);
-            border: 1px solid;
+            border: 2px solid;
             border-top-color: var(--win95-light);
             border-left-color: var(--win95-light);
             border-right-color: var(--win95-darker);
-            border-bottom: 1px solid var(--win95-darker);
-            margin-right: 2px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 12px;
-        }
-
-        .tab-button.active {
-            background: var(--win95-light);
-            border-bottom: 1px solid var(--win95-light);
-        }
-
-        .tab-content {
+            border-bottom-color: var(--win95-darker);
             display: none;
-            background: var(--win95-light);
-            border: 1px solid var(--win95-darker);
-            padding: 10px;
-            min-height: 300px;
+            z-index: 1001;
         }
 
-        .tab-content.active {
-            display: block;
+        .start-menu-header {
+            height: 40px;
+            background-color: var(--win95-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid var(--win95-darker);
         }
 
-        h2 {
-            font-size: 14px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-
-        p {
+        .start-menu-item {
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
             font-size: 12px;
-            line-height: 1.4;
-            margin-top: -2px;
-            margin-bottom: 10px;
+        }
+
+        .start-menu-item:hover {
+            background-color: var(--win95-blue);
+            color: white;
+        }
+
+        .start-menu-item img {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .start-menu-divider {
+            height: 1px;
+            background-color: var(--win95-darker);
+            margin: 2px 0;
         }
     </style>
 </head>
 <body>
-    <div class="window" id="mainWindow">
+    <div class="desktop" id="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon" data-window="vessels">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABz0lEQVR4nO2WvU7CQBTH+wjyBvoExkkcNdHRxMFBBgdHJgeNiR0MNTY6OJg4OJg4OJA4GBi0iQ4OxkSjV2yV8DEolipQPw6XnDnnlZYPf/e923vnf1qQpKX2z4sNsAzw+UcGWA2AZUrzGYluLWBlACxTms9IdGsBKwFgmdJ8RqJbC1gJAMuU5jMS3VrASgBYpjSfkdxSAvfgOd/pTOGSF44eCb4e5p1rKVwJUEDXu2W+7wTZK7OYwF+9OfzpyXuLCRDErbWoGcC5eR49SLcDFT60EWl8PQMzJEDvAc0hAeRRhOaJbYPv5lA5i9C3GJsBNDqw3EKzEHqJtZZeT++jR15eeSL0vtDnE0BW+bZmk9A8sHnYDQMNrKPBDT1IbQbkXqI4mTyBXmHvfQ+i2dTgfOIdYhm+VTSQQbchgE8qPyY0YOmpA9GN+iR0+VG9Bs1zgntxDnq0sSU8h48RmYWjDw2+9aCBUm9QYrP45Cq2AKbYAmmkLUXGUgRKZ3CPJVXCIhTfVPiZaW95QYGpRmXXx/BaBqGkF5xXz8FRSQc5HaC6DIvHcCmdvbQYqstwK+5UiJTSYXxRvQYfDWnklyW/1ZMdyWa6BK5hFN4AAAAASUVORK5CYII=" alt="Vessels Icon" class="icon-image">
+            <div class="icon-label">Vessels.exe</div>
+        </div>
+        <div class="desktop-icon" data-window="language" style="top: 110px; left: 0;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2WTytEURiHn2EWFqJkR2TC1jexkIWFlJKdT+ADkIVsLa3sBkuRD6CslJXyEfgbC0tJspGZ8Tfe6dTtuPfc+84YC+etU/fec573Ob/33AH7nABNoAWMVxzvGWgBH8A80K9zpoCLCpP7ZQ24wYgToAO8Am0gFzbwJbDpGXlyzZnZPQZaROQM6AJzOYaKchxlawOYtQhYBN40+3Vgbw+UwJYivwfmsgQcAj/K1nQfLlG8KGmvwGJMwDrwrbiLPVqOYkcFPAGrUQGHOudHFXIUa0r+EzDiFzAmdxIYrViA4kTRHDCsBcwAH4r9T7QlHgHDWkDDw8QI2JGQtqJ5AAa1gAQY8TFR92j16v/XChiUgE6O5rOOZk8LOMnRfChHgysBTznWgHUJuM2xBlwKaAfUgnbAzKgFLwK+A2p+R0LeAkbxFVALHvMkbyrqV0BdOwW2gWOlo6FQ7DvgUJPfAa6i9orWWpwHzgPquUm6mVntgtvAU4HkTzJ3Cwy4GEiALc90vQCXwKjrA2YfmJcIm6O3I3O7wLRLsn1i+QV+l0y8j8RfOQAAAABJRU5ErkJggg==" alt="Language Installation Icon" class="icon-image">
+            <div class="icon-label">LanguageSetup.exe</div>
+        </div>
+        <div class="desktop-icon" data-window="about" style="top: 220px; left: 0;">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB+ElEQVR4nO2WO0/CQBiGvxRjCDFGI+IlgHgJcVUH3VwYHRwZJHFz0NEfgIO7g4sTIZrqIKEDwcE4OYEQuRgvMQoxRlAiEAP1ODRSoG3BC3GB90ua9Lv1eb9L22+JJl3+Ww3pBBjSCTCkE2BIJ8CQToAhnQBDOgEGRwGnCwIxk2I9TiUBJ0KuU6zPJQncf+awHCZmwE0DxjnvSyBgUETnJAcpRsAriggOcJ4CxngfEghoBEhCnPcJuL0N5EO23a1qgRYBbSWfK/vYHh3BJFfAeP0JXq64bxDglS/J57I+toZH4CmL8DFwdFaL7/7CfCmKdoLsCEhEbD+eGvKxnEnD9vyCwL0NJVHpfsjGxxYe4SzfPwKCPJDLpNHxKQbm8gZ+Pp9D/+QUwgffWPl8lbKN8Xw/tQCnJ/WBXE5CjxzWz9fhP34w8OOtDVwGgjjLCXv/WTiVAM0u6PBJsGYB1+Aggl2MMLZ6twt3Og1nKbfTfL+dZ/iDWkD6MQlfMoHQ0iIiqUd1OX8yhg4uA3NuAAFTxeG3JWsVwfXGFqaKBfSHw+p1cxTL65yHpIkxoKMCFkA8toaechnDc/Pq/eZWDG/n5V1tWwliTTBZBWw9neD6tmbSRb4W7XYBVQF7T0er5U+A4lOwqisw8k1dyv8DvgEZ1Ykr+1yYBQAAAABJRU5ErkJggg==" alt="MyProfile Icon" class="icon-image">
+            <div class="icon-label">MyProfile.txt</div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" id="startButton">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAsklEQVR4nGNgoBAwKjlX/lfzqvnPQAKoV9b+37t370dSDJDyrPz//t/7/xzqTiQZIOZW/v/9//f/mapOJRkgbFf4/wPQAJbaU0kGCFoX/P8ANIDVu/4/g4EBcUHIZ5H//+v///9/3//vf8P//1N8iPNGgJr1/1dAA6waPv+f4U+cAfwW+f/Xg7QHA03w/T/Dj3AD/Azy/68Hac+eBDTB5/8Mv4nMRmDt5dCslGGdRy0DAGL5UhHNK2JWAAAAAElFTkSuQmCC" alt="Start">
+            Start
+        </div>
+        <div class="taskbar-divider"></div>
+        <div class="taskbar-time" id="taskbarTime">12:00 PM</div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-header">
+            My Portfolio
+        </div>
+        <div class="start-menu-item" data-window="vessels">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABz0lEQVR4nO2WvU7CQBTH+wjyBvoExkkcNdHRxMFBBgdHJgeNiR0MNTY6OJg4OJg4OJA4GBi0iQ4OxkSjV2yV8DEolipQPw6XnDnnlZYPf/e923vnf1qQpKX2z4sNsAzw+UcGWA2AZUrzGYluLWBlACxTms9IdGsBKwFgmdJ8RqJbC1gJAMuU5jMS3VrASgBYpjSfkdxSAvfgOd/pTOGSF44eCb4e5p1rKVwJUEDXu2W+7wTZK7OYwF+9OfzpyXuLCRDErbWoGcC5eR49SLcDFT60EWl8PQMzJEDvAc0hAeRRhOaJbYPv5lA5i9C3GJsBNDqw3EKzEHqJtZZeT++jR15eeSL0vtDnE0BW+bZmk9A8sHnYDQMNrKPBDT1IbQbkXqI4mTyBXmHvfQ+i2dTgfOIdYhm+VTSQQbchgE8qPyY0YOmpA9GN+iR0+VG9Bs1zgntxDnq0sSU8h48RmYWjDw2+9aCBUm9QYrP45Cq2AKbYAmmkLUXGUgRKZ3CPJVXCIhTfVPiZaW95QYGpRmXXx/BaBqGkF5xXz8FRSQc5HaC6DIvHcCmdvbQYqstwK+5UiJTSYXxRvQYfDWnklyW/1ZMdyWa6BK5hFN4AAAAASUVORK5CYII=" alt="Vessels">
+            Vessels Animation
+        </div>
+        <div class="start-menu-item" data-window="language">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2WTytEURiHn2EWFqJkR2TC1jexkIWFlJKdT+ADkIVsLa3sBkuRD6CslJXyEfgbC0tJspGZ8Tfe6dTtuPfc+84YC+etU/fec573Ob/33AH7nABNoAWMVxzvGWgBH8A80K9zpoCLCpP7ZQ24wYgToAO8Am0gFzbwJbDpGXlyzZnZPQZaROQM6AJzOYaKchxlawOYtQhYBN40+3Vgbw+UwJYivwfmsgQcAj/K1nQfLlG8KGmvwGJMwDrwrbiLPVqOYkcFPAGrUQGHOudHFXIUa0r+EzDiFzAmdxIYrViA4kTRHDCsBcwAH4r9T7QlHgHDWkDDw8QI2JGQtqJ5AAa1gAQY8TFR92j16v/XChiUgE6O5rOOZk8LOMnRfChHgysBTznWgHUJuM2xBlwKaAfUgnbAzKgFLwK+A2p+R0LeAkbxFVALHvMkbyrqV0BdOwW2gWOlo6FQ7DvgUJPfAa6i9orWWpwHzgPquUm6mVntgtvAU4HkTzJ3Cwy4GEiALc90vQCXwKjrA2YfmJcIm6O3I3O7wLRLsn1i+QV+l0y8j8RfOQAAAABJRU5ErkJggg==" alt="Language Setup">
+            Language Installation
+        </div>
+        <div class="start-menu-item" data-window="about">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB+ElEQVR4nO2WO0/CQBiGvxRjCDFGI+IlgHgJcVUH3VwYHRwZJHFz0NEfgIO7g4sTIZrqIKEDwcE4OYEQuRgvMQoxRlAiEAP1ODRSoG3BC3GB90ua9Lv1eb9L22+JJl3+Ww3pBBjSCTCkE2BIJ8CQToAhnQBDOgEGRwGnCwIxk2I9TiUBJ0KuU6zPJQncf+awHCZmwE0DxjnvSyBgUETnJAcpRsAriggOcJ4CxngfEghoBEhCnPcJuL0N5EO23a1qgRYBbSWfK/vYHh3BJFfAeP0JXq64bxDglS/J57I+toZH4CmL8DFwdFaL7/7CfCmKdoLsCEhEbD+eGvKxnEnD9vyCwL0NJVHpfsjGxxYe4SzfPwKCPJDLpNHxKQbm8gZ+Pp9D/+QUwgffWPl8lbKN8Xw/tQCnJ/WBXE5CjxzWz9fhP34w8OOtDVwGgjjLCXv/WTiVAM0u6PBJsGYB1+Aggl2MMLZ6twt3Og1nKbfTfL+dZ/iDWkD6MQlfMoHQ0iIiqUd1OX8yhg4uA3NuAAFTxeG3JWsVwfXGFqaKBfSHw+p1cxTL65yHpIkxoKMCFkA8toaechnDc/Pq/eZWDG/n5V1tWwliTTBZBWw9neD6tmbSRb4W7XYBVQF7T0er5U+A4lOwqisw8k1dyv8DvgEZ1Ykr+1yYBQAAAABJRU5ErkJggg==" alt="My Profile">
+            My Profile
+        </div>
+        <div class="start-menu-divider"></div>
+        <div class="start-menu-item">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAwElEQVR4nGNgoBAwSjnV/FfzrP7PQAKoVdb+37t370dSDJDyqPz//t/7/xy6ziQZIOZa/v/9//f/mWrOJBkg7FD4/wPQAJbas0kGCNoU/P8ANIDVp/4/g4EBcUHIb5X/////9//7P/f/0wNI84aAReH/9/////+Hae+++j/DnyQD+CwL/q+Hpr3sSUAT/P7P8J8EA/gtCv6vh2nvnAw0wff/DL9TLYCoZQF0K2XY51HIiRZFUKcx7PVo5JUzrC+olgEAQ8VnVANMpxEAAAAASUVORK5CYII=" alt="Help">
+            Help
+        </div>
+        <div class="start-menu-item">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA5ElEQVR4nGNgoBAwSnlU/1fzrP7PQAKoV9b+37t370dSDJDyrPr//t/7/xx6ziQZIOZW8f/9//f/merOJBkg7Fj0/wPQAJaGs0kGCNoW/v8ANIDVr+E/g4EBcUHI75T//+v/////F+7///QkQryI5g0Bi8L/7yH+xwbfAQP1JRJTEp9l4f/1UO3do4Em+P6f4R9xBvBbFP5fD9XeOQVogu//Gf4QZwC/RQGyds+pQBN8/8/wCy8PpzTTspj/12DaO6YC+V//M/xEMQCqnXmvRyNPgPL2ejTyyhnWF1TLAACenXJMPFk1gQAAAABJRU5ErkJggg==" alt="Exit">
+            Shut Down...
+        </div>
+    </div>
+
+    <!-- Windows -->
+    <!-- Vessels Window -->
+    <div class="window" id="vesselsWindow" style="width: 700px; height: 550px; top: 50px; left: 120px;">
         <div class="title-bar">
-            <div class="title-bar-text">Bottles.exe - Film Documentation</div>
+            <div class="title-bar-text">Vessels.exe - Film Documentation</div>
             <div class="title-bar-controls">
-                <button class="title-bar-button">–</button>
-                <button class="title-bar-button">□</button>
-                <button class="title-bar-button">×</button>
+                <button class="title-bar-button minimize">–</button>
+                <button class="title-bar-button maximize">□</button>
+                <button class="title-bar-button close">×</button>
             </div>
         </div>
         <div class="window-content">
-            <div class="tabs">
-                <button class="tab-button active" data-tab="synopsis">Home!!</button>
-                <button class="tab-button" data-tab="characters">Characters...</button>
-                <button class="tab-button" data-tab="words">Insignificant Artist's Words?</button>
-                <button class="tab-button" data-tab="process">Process~</button>
-                <!-- <button class="tab-button" data-tab="credits">Credits()</button> -->
-            </div>
+            <iframe src="vessels.html"></iframe>
+        </div>
+    </div>
 
-            <div id="synopsis" class="tab-content active">
-                <h2>Vessels</h2>
-                <p>A 40-second animated film exploring emotions and relationship of plastic bottles.</p>
-                <p>Title concepts: Vessels. Spilled Love. Treat or Cheat.</p>
-                <p>Production Period: January 25 - 31, 2025</p>
-                <p>Created by: <a href="https://www.instagram.com/__riverside__01?igsh=M2Z2dTg0a3Rienpi&utm_source=qr" target="_blank">River Yu</a></p>
-                <p>"Please set your volume above at least 50% before playing. Note that audio begins at 18 seconds into the clip."</p>
-                <iframe controls src="https://drive.google.com/file/d/1ilgiAYUxv4LTuMkxPSy7nSS4ujIwPFsb/preview" width="640" height="480" allow="autoplay"></iframe>
+    <!-- Language Installation Window -->
+    <div class="window" id="languageWindow" style="width: 500px; height: 450px; top: 70px; left: 150px;">
+        <div class="title-bar">
+            <div class="title-bar-text">English Language - Installation Wizard</div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button minimize">–</button>
+                <button class="title-bar-button maximize">□</button>
+                <button class="title-bar-button close">×</button>
             </div>
+        </div>
+        <div class="window-content">
+            <iframe id="languageIframe" src="about:blank"></iframe>
+        </div>
+    </div>
 
-            <div id="characters" class="tab-content">
-                <h1>Characters</h1>
-                <p style="font-style: italic;">Meet our three main bottles, each with their own unique personality and journey.</p>
-                <h3>Bottle 1 - The Protagonist</h3>       
-                <p>Our conflicted hero, on a quest for connection. Happily in a committed relationship with Bottle 2 and they have two adorable kids, but everything changes after one wild party night.</p>
-                <img src="./bottle1-complete.png" alt="Bottle 1" width="125">      
+    <!-- About Me Window -->
+    <div class="window" id="aboutWindow" style="width: 400px; height: 350px; top: 90px; left: 170px;">
+        <div class="title-bar">
+            <div class="title-bar-text">MyProfile.txt - Notepad</div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button minimize">–</button>
+                <button class="title-bar-button maximize">□</button>
+                <button class="title-bar-button close">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="about-content">
+                <h2>About Me</h2>
+                <p>I am a Cornell Information Science MPS master student, with an undergraduate background in Psychology from CUHK(SZ).</p>
+                <p>My focus is on UX research and UX design, bringing a unique perspective that combines technological understanding with psychological insights.</p>
+                <p>I enjoy creating interactive projects that explore the intersection of technology, psychology, and cultural experiences.</p>
+                <h2>Projects</h2>
+                <p><strong>Vessels</strong> - A 40-second animated film exploring emotions and relationships of plastic bottles. This creative piece examines themes of connection, betrayal, and the emotional weight of choices.</p>
                 
-                <h3>Bottle 2 - The Devoted Partner</h3>
-                <p>Brings warmth through daily acts of love. Creator of cherished moments.</p>
-                <img src="./bottle2-sm.png" alt="Bottle 2" width="120">
-
-                <h3>Bottle 3 - The Magnetic Soul</h3>
-                <p>Electric, fascinating, a mirror to Bottle 1's deepest self. Their chance meeting sparks undeniable chemistry that challenges everything.</p>
-                <img src="./bottle3-sm.png" alt="Bottle 3" width="90">
-
-                <h3>Okay... kids rights matter!</p>
-                <img src="kid1.png" alt="Kid 1" width="200">
-                <img src="kid2.png" alt="Kid 2" width="200">
-                <h3>Wait... don't forget about the hand at the end and the pouring water!</h3>
-                <p> (Let's be honest, our bottles get all the glamour shots while hands and water just do all the work!) </p>
-                <p>Hand: Evil right hand of Yulong Quan (director's partner, currentlyXD) - the agent of unpredictable fate.</p>
-                <p>Water: Bottle 1's emotional turbulence.</p>
-            </div>
-
-            <div id="words" class="tab-content">
-                <h2>This film doesn't worth this documentation if not required, <br/>but I am grateful for my bottles' performance</h2>
-                <h1>A lot can be done to make it better</h1>
-                <h3> but I am just too busy to polish it, SORRY</h3>
-                <p>Hi I am River Yu 余洋希, your friendly neighborhood animator who somehow decided to make an emotional drama starring plastic bottles. </p>
-                <p>What I wanted to explore is the emotional weight of someone who cheats (that water turbulence scene) and the uncertainty of fate (the mysterious human hand at last), but these themes probably needed more than 40 seconds to fully unfold...</p>
-
-                <p>First time using Adobe Animate (aka the cooler Flash for you [and me] millennials out there), iMovie, AND Photoshop since my primary school Flash gaming days, and wow, what a journey!</p>
-                <h3>Lessons learned with lack of sleep right before deadline:</h3>
-                <p>;) (wanted to use text emoticons all along the film but find it quite confusing without caption (I know the biggest weakness is legibility before I submitted the assignment)...</p>
-                <p>---------------------------------------------------------</p>
-                <ul>
-                    <h2>Plot vs. Duration Reality Check:</h2>
-                        <li>Don't try to fit a whole relationship drama + party scene + emotional crisis + family dynamics into 30 seconds</li>
-                        <li>Those bottles needed more time to process their feelings</li>
-                        <li>Note to self: Each transition deserves at least 2-3 seconds to breathe (not 0.5 seconds of panic-induced scene changes)</li>
-                </ul>
-<p>---------------------------------------------------------</p>
-                <ul>
-                    <h2>Technical Wisdom:</h2>
-                    <li>Learn keyboard shortcuts BEFORE the final night</li>
-                    <li>Animation takes 3x longer than your optimistic 3 AM brain thinks</li>
-                    <li>Next time make the water scene a surreal dream sequence - tears become an ocean, reality dissolves, bottles float in emotional space (and it's totally not because I ran out of time to animate proper transitions)</li>
-                </ul>
-                <p>---------------------------------------------------------</p>
-                <ul>
-                    <h2>Future Me, Please Read:</h2>
-                    <li>Start early to implement (Future me reading this: we both know you won't, but at least TRY?)</li>
-                    <li>Don't stay up late (Animating at 4:37 AM while experiencing exsitential crisis and watching bottles dance)</li>
-                    <li>Plan ahead > creative crisis at midnight > questioning my whole life at 3 AM > sunrise revelations</li>
-                </ul>
+                <p><strong>Language Installation</strong> - An audio-based project examining language politics and the immigrant experience with compulsory English learning. This piece reflects on the process of linguistic assimilation and its impact on identity.</p>
                 
-
-                <p></p>
+                <h2>Skills</h2>
+                <p>• UX Research & Design</p>
+                <p>• Animation & Digital Media</p>
+                <p>• Interactive Storytelling</p>
+                <p>• User Psychology</p>
             </div>
-
-            <div id="process" class="tab-content">
-                <h1>Process</h1>
-                <p>Production Period: January 25 - 31, 2025</p>
-
-                <h2>Ideation:</h2>
-                <p>Started with exploring various themes of romantic love. 
-                <br/>
-                Alterative ideas:
-                1. how "romantic love is overrated" 
-                2. documenting loving acts by focusing on partner's hand (like how he packed lunches for me and cook every single meal for us)(that's not overrated I love him), 
-                <br/>but these felt either too off-topic or cliche.<br/>
-                 Ultimately chose to focus on the complex emotional landscape of infidelity.</p>
-                <p>Key creative decisions:
-                - Used plastic bottles as gender-neutral characters</br>
-                - Decided to focus on the cheater's perspective and internal struggle</br>
-                - Incorporated water as a metaphor for emotional turbulence</br>
-                - Added the "hand of fate" ending for determinist tension</p>
-                <img src="./storyboad1.jpg" width="200">
-                <img src="./storyboard2.jpg" width="200">
-                (find how bottles undressed to make love in this first draft storyboard)
-
-                <h2>Implementation:</h2>
-                <p>Wanted to implement stop motion first....</p>
-                <img src="./stop-motion-album.jpeg" width="200">
-                <p>But found it too hard and troublesome, then turned to Adobe Animate</p>
-                <p>Created using three main software tools:</br>
-                - Adobe Animate: Character animation and main scenes</br>
-                - Photoshop: Cut out the bottles</br>
-                - iMovie: Final editing and sound integration (much more friendly than PR for first time user)</p>
-                <p> 
-
-                <p>Shot the water scene and hand scene,</p>
-                <p>Recorded breathe sound (buried behind water scene), step sound (didn't use)</p>
-                <p>Animating and video editing grind....</p>
-                <p>Crossed the finish line! *victory dance* 🎉</p>
-                
-                
-            </div>
-
-            <!-- <div id="credits" class="tab-content">
-                <h2>Credits</h2>
-                <p>The creative team behind the film.</p>
-            </div> -->
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            function switchTab(tabId) {
-                // Hide all tab contents
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
+            // Elements
+            const desktop = document.getElementById('desktop');
+            const startButton = document.getElementById('startButton');
+            const startMenu = document.getElementById('startMenu');
+            const taskbarTime = document.getElementById('taskbarTime');
+            const desktopIcons = document.querySelectorAll('.desktop-icon');
+            const windows = document.querySelectorAll('.window');
+            const startMenuItems = document.querySelectorAll('.start-menu-item');
+            
+            // Window references
+            const vesselsWindow = document.getElementById('vesselsWindow');
+            const languageWindow = document.getElementById('languageWindow');
+            const aboutWindow = document.getElementById('aboutWindow');
+            const languageIframe = document.getElementById('languageIframe');
+            
+            // Update clock
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Convert 0 to 12
+                taskbarTime.textContent = `${hours}:${minutes} ${ampm}`;
+            }
+            
+            setInterval(updateClock, 1000);
+            updateClock();
+            
+            // Start Menu toggle
+            startButton.addEventListener('click', function() {
+                startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Hide start menu when clicking elsewhere
+            document.addEventListener('click', function(e) {
+                if (!startButton.contains(e.target) && !startMenu.contains(e.target)) {
+                    startMenu.style.display = 'none';
+                }
+            });
+            
+            // Desktop icons click handler
+            desktopIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const windowId = this.getAttribute('data-window');
+                    openWindow(windowId);
                 });
-
-                // Deactivate all tabs
-                tabButtons.forEach(button => {
-                    button.classList.remove('active');
+            });
+            
+            // Start menu items click handler
+            startMenuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const windowId = this.getAttribute('data-window');
+                    if (windowId) {
+                        openWindow(windowId);
+                        startMenu.style.display = 'none';
+                    }
                 });
-
-                // Show selected tab content
-                const selectedContent = document.getElementById(tabId);
-                const selectedTab = document.querySelector(`[data-tab="${tabId}"]`);
+            });
+            
+            // Window controls
+            windows.forEach(window => {
+                const titleBar = window.querySelector('.title-bar');
+                const closeBtn = window.querySelector('.close');
+                const minimizeBtn = window.querySelector('.minimize');
+                const maximizeBtn = window.querySelector('.maximize');
                 
-                if (selectedContent && selectedTab) {
-                    selectedContent.classList.add('active');
-                    selectedTab.classList.add('active');
+                // Make window active when clicked
+                window.addEventListener('mousedown', function() {
+                    setActiveWindow(window);
+                });
+                
+                // Close button
+                closeBtn.addEventListener('click', function() {
+                    window.style.display = 'none';
+                });
+                
+                // Minimize button (just hides for simplicity)
+                minimizeBtn.addEventListener('click', function() {
+                    window.style.display = 'none';
+                });
+                
+                // Maximize button (toggles a larger size)
+                maximizeBtn.addEventListener('click', function() {
+                    if (window.style.width === '100%') {
+                        window.style.width = window.getAttribute('data-prev-width') || '500px';
+                        window.style.height = window.getAttribute('data-prev-height') || '400px';
+                        window.style.top = window.getAttribute('data-prev-top') || '50px';
+                        window.style.left = window.getAttribute('data-prev-left') || '50px';
+                    } else {
+                        window.setAttribute('data-prev-width', window.style.width);
+                        window.setAttribute('data-prev-height', window.style.height);
+                        window.setAttribute('data-prev-top', window.style.top);
+                        window.setAttribute('data-prev-left', window.style.left);
+                        window.style.width = '100%';
+                        window.style.height = 'calc(100vh - 30px)';
+                        window.style.top = '0';
+                        window.style.left = '0';
+                    }
+                });
+                
+                // Make windows draggable
+                let isDragging = false;
+                let dragOffsetX, dragOffsetY;
+                
+                titleBar.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    dragOffsetX = e.clientX - window.getBoundingClientRect().left;
+                    dragOffsetY = e.clientY - window.getBoundingClientRect().top;
+                    setActiveWindow(window);
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        window.style.left = (e.clientX - dragOffsetX) + 'px';
+                        window.style.top = (e.clientY - dragOffsetY) + 'px';
+                    }
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+            });
+            
+            // Set active window (bring to front)
+            function setActiveWindow(activeWindow) {
+                windows.forEach(window => {
+                    window.classList.remove('active');
+                    window.querySelector('.title-bar').classList.add('inactive');
+                });
+                activeWindow.classList.add('active');
+                activeWindow.querySelector('.title-bar').classList.remove('inactive');
+            }
+            
+            // Open window function
+            function openWindow(windowId) {
+                let windowToOpen;
+                
+                if (windowId === 'vessels') {
+                    windowToOpen = vesselsWindow;
+                } else if (windowId === 'language') {
+                    windowToOpen = languageWindow;
+                    // Load the language installer in the iframe
+                    if (languageIframe.src === 'about:blank') {
+                        // Create blob URL for the language installer
+                        fetch('language-installer.html')
+                            .then(response => response.text())
+                            .then(html => {
+                                const blob = new Blob([html], { type: 'text/html' });
+                                const url = URL.createObjectURL(blob);
+                                languageIframe.src = url;
+                            });
+                    }
+                } else if (windowId === 'about') {
+                    windowToOpen = aboutWindow;
+                }
+                
+                if (windowToOpen) {
+                    windowToOpen.style.display = 'block';
+                    setActiveWindow(windowToOpen);
                 }
             }
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab');
-                    switchTab(tabId);
-                });
-            });
-
-            // Window dragging
-            const titleBar = document.querySelector('.title-bar');
-            const mainWindow = document.getElementById('mainWindow');
-            let isDragging = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
-
-            titleBar.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                initialX = e.clientX - mainWindow.offsetLeft;
-                initialY = e.clientY - mainWindow.offsetTop;
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    e.preventDefault();
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                    mainWindow.style.left = `${currentX}px`;
-                    mainWindow.style.top = `${currentY}px`;
-                    mainWindow.style.position = 'absolute';
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
         });
     </script>
 </body>

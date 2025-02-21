@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Language Setup Wizard</title>
+    <style>
+        :root {
+            --win95-gray: #c0c0c0;
+            --win95-dark: #808080;
+            --win95-darker: #404040;
+            --win95-light: #ffffff;
+            --win95-blue: #000080;
+            --win95-green: #008080;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: var(--win95-gray);
+            /* padding: 20px; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 75px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .icon-img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+
+        .icon-label {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .window {
+            background-color: var(--win95-gray);
+            border: 2px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+            padding: 2px;
+            margin-bottom: 20px;
+            position: relative;
+            width: 500px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .title-bar {
+            background-color: var(--win95-blue);
+            color: white;
+            padding: 2px 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-bar-text {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .title-bar-button {
+            width: 16px;
+            height: 14px;
+            background: var(--win95-gray);
+            border: 1px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .window-content {
+            padding: 15px;
+            background-color: var(--win95-gray);
+            display: flex;
+            flex-direction: column;
+            min-height: 350px;
+        }
+
+        .wizard-header {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .wizard-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .wizard-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .wizard-subtitle {
+            font-size: 12px;
+        }
+
+        .wizard-body {
+            flex-grow: 1;
+            background: var(--win95-light);
+            border: 1px solid;
+            border-top-color: var(--win95-darker);
+            border-left-color: var(--win95-darker);
+            border-right-color: var(--win95-light);
+            border-bottom-color: var(--win95-light);
+            padding: 10px;
+            margin-bottom: 15px;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wizard-step {
+            display: none;
+            height: 100%;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        .wizard-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .wizard-button {
+            padding: 4px 15px;
+            background: var(--win95-gray);
+            border: 1px solid;
+            border-top-color: var(--win95-light);
+            border-left-color: var(--win95-light);
+            border-right-color: var(--win95-darker);
+            border-bottom-color: var(--win95-darker);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: white;
+            border: 1px solid;
+            border-top-color: var(--win95-darker);
+            border-left-color: var(--win95-darker);
+            border-right-color: var(--win95-light);
+            border-bottom-color: var(--win95-light);
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--win95-blue);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-input {
+            margin-right: 8px;
+        }
+
+        .checkbox-label {
+            font-size: 12px;
+        }
+
+        .scrolling-text {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .analytics-container {
+            margin-top: 15px;
+        }
+
+        .analytics-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .analytics-label {
+            flex-grow: 1;
+        }
+
+        .analytics-bar-container {
+            width: 200px;
+            height: 12px;
+            background: white;
+            border: 1px solid var(--win95-darker);
+        }
+
+        .analytics-bar {
+            height: 100%;
+            background: var(--win95-blue);
+            width: 0%;
+            transition: width 1s;
+        }
+
+        .warning-text {
+            color: red;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .terminal-text {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff00;
+            background-color: #000;
+            height: 100%;
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="window" id="installerWindow">
+        <!-- <div class="title-bar">
+            <div class="title-bar-text">English Language - Installation Wizard</div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button">–</button>
+                <button class="title-bar-button">□</button>
+                <button class="title-bar-button">×</button>
+            </div>
+        </div> -->
+        <div class="window-content">
+            <div class="wizard-header">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2WTytEURiHn2EWFqJkR2TC1jexkIWFlJKdT+ADkIVsLa3sBkuRD6CslJXyEfgbC0tJspGZ8Tfe6dTtuPfc+84YC+etU/fec573Ob/33AH7nABNoAWMVxzvGWgBH8A80K9zpoCLCpP7ZQ24wYgToAO8Am0gFzbwJbDpGXlyzZnZPQZaROQM6AJzOYaKchxlawOYtQhYBN40+3Vgbw+UwJYivwfmsgQcAj/K1nQfLlG8KGmvwGJMwDrwrbiLPVqOYkcFPAGrUQGHOudHFXIUa0r+EzDiFzAmdxIYrViA4kTRHDCsBcwAH4r9T7QlHgHDWkDDw8QI2JGQtqJ5AAa1gAQY8TFR92j16v/XChiUgE6O5rOOZk8LOMnRfChHgysBTznWgHUJuM2xBlwKaAfUgnbAzKgFLwK+A2p+R0LeAkbxFVALHvMkbyrqV0BdOwW2gWOlo6FQ7DvgUJPfAa6i9orWWpwHzgPquUm6mVntgtvAU4HkTzJ3Cwy4GEiALc90vQCXwKjrA2YfmJcIm6O3I3O7wLRLsn1i+QV+l0y8j8RfOQAAAABJRU5ErkJggg==" class="wizard-icon" alt="Language Icon">
+                <div>
+                    <h1 class="wizard-title">English Language Installation Wizard</h1>
+                    <p class="wizard-subtitle">This wizard will guide you through the process of integrating English into your identity system.</p>
+                </div>
+            </div>
+
+            <div class="wizard-body">
+                <!-- Step 1: Welcome -->
+                <div class="wizard-step active" id="step1">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">Welcome to English Language Setup</h2>
+                    <p style="font-size: 12px; margin-bottom: 10px;">This wizard will help you install English as a compulsory language in your neural processing system.</p>
+                    <p style="font-size: 12px; margin-bottom: 10px;">Before continuing, please ensure:</p>
+                    <ul style="font-size: 12px; margin-left: 20px; margin-bottom: 15px;">
+                        <li>Your native language will be placed in a secondary memory location</li>
+                        <li>You have enough cognitive space for new cultural references</li>
+                        <li>You understand this may override some existing cultural patterns</li>
+                    </ul>
+                    <p style="font-size: 12px; margin-bottom: 10px;">Click 'Next' to begin the installation process.</p>
+                </div>
+
+                <!-- Step 2: License Agreement -->
+                <div class="wizard-step" id="step2">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">License Agreement</h2>
+                    <div class="scrolling-text">
+ENGLISH LANGUAGE LICENSE AGREEMENT
+
+By proceeding with this installation, you agree to the following terms:
+
+1. ACCEPTANCE OF DOMINANT CULTURAL NORMS
+User agrees to prioritize English linguistic structures over native language patterns in professional, academic, and increasingly social contexts.
+
+2. ACCENT MODIFICATION
+User acknowledges that efforts will be made to modify pronunciation to conform to standardized patterns. Failure to do so may result in decreased social capital and professional opportunities.
+
+3. CULTURAL REFERENCE REQUIREMENTS
+User agrees to learn and internalize cultural references necessary for "natural" communication, regardless of relevance to native cultural experience.
+
+4. GRAMMATICAL SOVEREIGNTY
+User surrenders the right to apply native language grammar patterns to English expression. All "mistakes" are the responsibility of the user, not flaws in the language system.
+
+5. PERPETUAL OUTSIDER STATUS
+Despite achieving fluency, user acknowledges that native-like status is rarely granted, and "foreign" designation may persist indefinitely.
+
+6. IDENTITY MODIFICATION
+User consents to potential shifts in self-expression, humor, emotional range, and perceived personality when operating in English mode.
+
+7. NO REFUNDS
+The energy, time, and identity investments made in this language acquisition cannot be returned or refunded.
+
+8. AUTOMATIC UPDATES
+User agrees to continually update their language patterns to match evolving standards without notice or consent.
+
+PROCEED AT YOUR OWN RISK. CLICK "I ACCEPT" TO CONTINUE.
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="licenseCheckbox" class="checkbox-input">
+                        <label for="licenseCheckbox" class="checkbox-label">I accept the terms of the license agreement</label>
+                    </div>
+                </div>
+
+                <!-- Step 3: Installation Options -->
+                <div class="wizard-step" id="step3">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">Installation Options</h2>
+                    <p style="font-size: 12px; margin-bottom: 15px;">Select the components of English you wish to install:</p>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="accentCheck" class="checkbox-input" checked disabled>
+                        <label for="accentCheck" class="checkbox-label">Accent Modification (Required)</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="grammarCheck" class="checkbox-input" checked disabled>
+                        <label for="grammarCheck" class="checkbox-label">Grammatical Structures (Required)</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="cultureCheck" class="checkbox-input" checked>
+                        <label for="cultureCheck" class="checkbox-label">Cultural Reference Package</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="suppressCheck" class="checkbox-input" checked>
+                        <label for="suppressCheck" class="checkbox-label">Native Language Suppression Module</label>
+                    </div>
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="identityCheck" class="checkbox-input">
+                        <label for="identityCheck" class="checkbox-label">Identity Restructuring Tools</label>
+                    </div>
+                    
+                    <p style="font-size: 12px; margin-top: 15px;">Installation will require approximately:</p>
+                    <p style="font-size: 12px;">- 3-7 years of consistent practice</p>
+                    <p style="font-size: 12px;">- 4,500+ hours of exposure</p>
+                    <p style="font-size: 12px;">- Countless moments of uncertainty and frustration</p>
+                </div>
+
+                <!-- Step 4: Language Sample Testing -->
+                <div class="wizard-step" id="step4">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">Language Sample Analysis</h2>
+                    <p style="font-size: 12px; margin-bottom: 15px;">Please listen carefully to this required language sample. Your cognitive patterns will be analyzed for compatibility.</p>
+                    
+                    <div style="display: flex; justify-content: center; margin: 15px 0;">
+                        <button id="playButton" class="wizard-button">▶ Play Language Sample</button>
+                        <audio id="audioSample" src="YOUR_AUDIO_URL_HERE"></audio>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="audioProgress"></div>
+                    </div>
+                    
+                    <div class="analytics-container" id="analyticsContainer" style="display: none;">
+                        <div class="analytics-row">
+                            <span class="analytics-label">Accent Recognition:</span>
+                            <div class="analytics-bar-container">
+                                <div class="analytics-bar" id="accentBar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-row">
+                            <span class="analytics-label">Cultural Reference Detection:</span>
+                            <div class="analytics-bar-container">
+                                <div class="analytics-bar" id="cultureBar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-row">
+                            <span class="analytics-label">Native Language Interference:</span>
+                            <div class="analytics-bar-container">
+                                <div class="analytics-bar" id="interferenceBar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-row">
+                            <span class="analytics-label">Assimilation Status:</span>
+                            <div class="analytics-bar-container">
+                                <div class="analytics-bar" id="assimilationBar"></div>
+                            </div>
+                        </div>
+                        
+                        <p class="warning-text" id="warningText">WARNING: High levels of native language detected. Increased suppression measures recommended.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5: Installation Progress -->
+                <div class="wizard-step" id="step5">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">Installing English Language System</h2>
+                    <p style="font-size: 12px; margin-bottom: 15px;">Please wait while we install English into your neural pathways...</p>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="installProgress"></div>
+                    </div>
+                    
+                    <div class="terminal-text" id="installTerminal">
+Initializing English language installation...
+Scanning native language structures...
+Creating language partitions...
+Remapping neural pathways...
+Installing pronunciation patterns...
+> Warning: Native accent detected, applying corrective measures...
+Loading cultural references...
+> Notice: Some idioms may not translate directly
+> Notice: Humor module may experience intermittent failures
+Configuring grammar enforcement rules...
+Installing social assimilation protocols...
+> Caution: Identity conflicts may occur during integration
+Optimizing language switching latency...
+> Warning: Emotional expression may be reduced in second language
+Finalizing installation...
+                    </div>
+                </div>
+
+                <!-- Step 6: Completion -->
+                <div class="wizard-step" id="step6">
+                    <h2 style="font-size: 14px; margin-bottom: 10px;">Installation Complete</h2>
+                    <p style="font-size: 12px; margin-bottom: 15px;">English language has been successfully installed in your cognitive system.</p>
+                    
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAADJ0lEQVR4nO2WTWhcVRTHf+e+92Ymk2QmmSSTNm2tVm0LVdSFIK0IWneCQqFY0CiCH6hUEOvCj5XgwkJxIVhduBREqLhRQXGhUCjFlrZSW0nrR9M2TfPdZJLM9+vddTHJMHmTN5OuxH/h5XLnnjv/3z333HPOA7VqrWPtBr4CTlA7DQKfAzKewT0ewHhgQZbsC30FrEMDa1zPYx9wkLBkBOzH+Pf44eC54Ll3/wUNFOBZ4IQ7PgLDcxOj2c8MIyKNl4AngZ82kGMZUw24FXgZ2LmiDcgCg6OXPppybKsR6E2TaDiMbXoUxIBbgHeAbatBZUv3vr8s09zbdPAplG2jKH6SiV7UepTnlOBhYKIalK74vN6X6Ol7SIuewvGy+P1xjGDTfQreNgQUV4OcAaJ9p0/dLW2nVypFzh9AiEYOr8WBY8AXwDVga9nPIeCfclCpS0Ybl6zseNfxiTL5XB7LKmJZRaQQp1F+n4F9OeDKGsFj6xFQ6HzwmbujRqJnHCGmMU0Dx8nhFL8nuH0nQ0L8AvyyKQG6YTfW9a9PF+2iqjiOg+M4OI5D8NbnDwnhu1IDHQM2LMDomz/7jlvWqLsuQgiE9OFfeBtHOfgXBZAXVoLKJeBkuRtIHW88FHGXhWmaGKYPf2MzRiBxB9BbEaCB34GflwNXKpHSqGIhV1sBflP4o9vjwN1V8rO6AKKQnb1SLObIZbPY+Uc+lELerkp+a14D2h0ZpzEDlq9w7Yv3JwuFJE6iF0tpuqTE110Nrhy/FzgOzAK/AcXl5Uj0TU+MTcbj8YjWXsVMNrRZ0USX0pq2zh2Bq5cvpS9+8N71Ky2Rd6stWyVmgF+B1FIN+KyJiR9+zGQu3kjnMzK+o1Mk9h0R2tHZwStQKmTTM9dH0l8/O5BJNMujwBdV8l9SPlZyOBgcvtR96sHJwXeF3/JNF3NFkZtHNnbj7X9SYLadBMWejdGHk+MTd3btfWGo4/jT44VChkPAi8BENX5WuQ2B7wqWVREYs5v3TAfbt44GAs1HfL6mLo9n6RNvevA5oAk4W7H/JPAB8MhN7L9Wa6hZWC1HO3rQ/jAAAAAASUVORK5CYII=" alt="Success" style="display: block; margin: 10px auto; width: 48px; height: 48px;">
+                    
+                    <p style="font-size: 12px; margin-top: 15px;">Important notes:</p>
+                    <ul style="font-size: 12px; margin-left: 20px; margin-bottom: 15px;">
+                        <li>You may experience occasional native language intrusions</li>
+                        <li>Regular practice is required to maintain fluency</li>
+                        <li>Some cultural references will need manual updates</li>
+                        <li>Identity modules may need reconciliation</li>
+                    </ul>
+                    
+                    <p style="font-size: 12px;">Click 'Finish' to complete the setup and begin your new linguistic identity.</p>
+                </div>
+            </div>
+
+            <div class="wizard-footer">
+                <button class="wizard-button" id="backButton" disabled>< Back</button>
+                <button class="wizard-button" id="nextButton">Next ></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelectorAll('.wizard-step');
+            const nextButton = document.getElementById('nextButton');
+            const backButton = document.getElementById('backButton');
+            const licenseCheckbox = document.getElementById('licenseCheckbox');
+            const playButton = document.getElementById('playButton');
+            const audioSample = document.getElementById('audioSample');
+            const audioProgress = document.getElementById('audioProgress');
+            const analyticsContainer = document.getElementById('analyticsContainer');
+            const accentBar = document.getElementById('accentBar');
+            const cultureBar = document.getElementById('cultureBar');
+            const interferenceBar = document.getElementById('interferenceBar');
+            const assimilationBar = document.getElementById('assimilationBar');
+            const warningText = document.getElementById('warningText');
+            const installProgress = document.getElementById('installProgress');
+            
+            let currentStep = 1;
+            const totalSteps = steps.length;
+            
+            // Update button states
+            const updateButtons = () => {
+                backButton.disabled = currentStep === 1;
+                
+                if (currentStep === 2) {
+                    nextButton.disabled = !licenseCheckbox.checked;
+                } else if (currentStep === totalSteps) {
+                    nextButton.textContent = 'Finish';
+                } else {
+                    nextButton.disabled = false;
+                    nextButton.textContent = 'Next >';
+                }
+            };
+            
+            // Navigate to a specific step
+            const goToStep = (step) => {
+                steps.forEach((s, index) => {
+                    if (index + 1 === step) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                
+                currentStep = step;
+                updateButtons();
+                
+                // Special step handling
+                if (step === 4) {
+                    // Language sample step
+                    analyticsContainer.style.display = 'none';
+                } else if (step === 5) {
+                    // Installation progress step
+                    simulateInstallation();
+                }
+            };
+            
+            // Next button handler
+            nextButton.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    goToStep(currentStep + 1);
+                } else {
+                    // Finish button clicked
+                    window.close();
+                }
+            });
+            
+            // Back button handler
+            backButton.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
+            
+            // License checkbox handler
+            licenseCheckbox.addEventListener('change', () => {
+                updateButtons();
+            });
+            
+            // Play audio button handler
+            playButton.addEventListener('click', () => {
+                playButton.disabled = true;
+                audioSample.play();
+                
+                // Simulate audio progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 1;
+                    audioProgress.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        analyticsContainer.style.display = 'block';
+                        simulateAnalytics();
+                    }
+                }, 600); // Adjust this to match your audio length
+            });
+            
+            // Simulate analytics filling
+            const simulateAnalytics = () => {
+                setTimeout(() => {
+                    accentBar.style.width = '65%';
+                }, 500);
+                
+                setTimeout(() => {
+                    cultureBar.style.width = '42%';
+                }, 1000);
+                
+                setTimeout(() => {
+                    interferenceBar.style.width = '78%';
+                    warningText.style.display = 'block';
+                }, 1500);
+                
+                setTimeout(() => {
+                    assimilationBar.style.width = '37%';
+                }, 2000);
+            };
+            
+            // Simulate installation progress
+            const simulateInstallation = () => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 1;
+                    installProgress.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            goToStep(6);
+                        }, 1000);
+                    }
+                }, 50);
+            };
+            
+            // Make window draggable
+            const titleBar = document.querySelector('.title-bar');
+            const installerWindow = document.getElementById('installerWindow');
+            let isDragging = false;
+            let offsetX, offsetY;
+            
+            titleBar.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - installerWindow.getBoundingClientRect().left;
+                offsetY = e.clientY - installerWindow.getBoundingClientRect().top;
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    installerWindow.style.left = (e.clientX - offsetX) + 'px';
+                    installerWindow.style.top = (e.clientY - offsetY) + 'px';
+                    installerWindow.style.position = 'absolute';
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Initialize
+            updateButtons();
+        });
+    </script>
+</body>
+</html>
