@@ -381,8 +381,11 @@ PROCEED AT YOUR OWN RISK. CLICK "I ACCEPT" TO CONTINUE.
                     <p style="font-size: 12px; margin-bottom: 15px;">Please listen carefully to this required language sample. Your cognitive patterns will be analyzed for compatibility.</p>
                     
                     <div style="display: flex; justify-content: center; margin: 15px 0;">
-                        <button id="playButton" class="wizard-button">▶ Play Language Sample</button>
-                        <audio id="audioSample" src="YOUR_AUDIO_URL_HERE"></audio>
+                        <!-- <button id="playButton" class="wizard-button">▶ Play Language Sample</button> -->
+                        <!-- <button id="playButton" class="wizard-button" onclick="document.getElementById('audioSample').play()">▶ Play Language Sample</button> -->
+                        <audio controls id="audioSample" preload="auto" >
+                            <source src="LanguageFlush.mp3" type="audio/mpeg">
+                        </audio>
                     </div>
                     
                     <div class="progress-bar-container">
